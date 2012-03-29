@@ -1,0 +1,17 @@
+
+{ "name"          : "#projectname#",
+  "author"        : {
+    "name"  : "#author#",
+    "email" : "#email#",
+    "url"   : "#website#"
+  },
+  "description"   : "",
+  "version"       : "0.0.1",
+  "main" : "./src/main.js",
+  "engines": { "node": "0.6.x" },
+  "dependencies": {
+  },
+  "devDependencies": {
+     "nodeunit": "0.7.x"
+  }
+}

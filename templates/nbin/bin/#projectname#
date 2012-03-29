@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+var cli = require('cli');
+
+
+cli.parse({
+});
+
+
+cli.main(function(args, options) {
+});

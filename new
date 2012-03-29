@@ -1,0 +1,81 @@
+#!/bin/bash
+
+AUTHOR="Tom Booth"
+EMAIL="tombooth@gmail.com"
+WEBSITE="http://thomasbooth.co.uk"
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+TEMPLATE_DIR=$DIR/templates/$1
+PROJECT_DIR=`pwd`/$2
+
+PROJECTNAME_SED=s:#projectname#:$2:g
+
+if [ $# -eq 0 ]; then
+   echo "Usage: `basename $0` <template> <name|path>"
+   echo
+   echo "<template>: Maps to files in $DIR/templates. If the file is a directory it will create a project otherwise it will copy the file."
+   echo "<name|path>: When template refers to a project the name of that project, when it's a file this will be the path it's copied to."
+   echo
+   echo "Avaliable templates:"
+   ls $DIR/templates
+   exit 1
+fi
+
+if [ ! -e $TEMPLATE_DIR ]; then
+   echo "Template $1 does not exist"
+   echo
+   echo "Avaliable templates:"
+   ls $DIR/templates
+   exit 1
+fi
+
+if [ -e $PROJECT_DIR ]; then
+   echo "There is already a file at $PROJECT_DIR";
+   exit 1
+fi
+
+if [ -d $TEMPLATE_DIR ]; then
+
+   echo "Creating project..."
+
+   cp -r $TEMPLATE_DIR $PROJECT_DIR
+
+   for file in $(find $PROJECT_DIR -type f) 
+   do
+
+      out_file=$(echo $file | sed $PROJECTNAME_SED)
+
+      echo "Creating $out_file"
+
+      # if the file name contained any placeholders then move
+      # the copied file to it's new location and change to point
+      # at the right file
+      if [ "$file" != "$out_file" ]; then
+         mv $file $out_file
+         file=$out_file
+      fi
+
+      # replace any placeholders in the files
+      cat $file | 
+         sed $PROJECTNAME_SED | 
+         sed "s:#author#:$AUTHOR:g" | 
+         sed "s:#email#:$EMAIL:g" | 
+         sed "s@#website#@$WEBSITE@g" > $file
+
+   done
+
+   git init $PROJECT_DIR
+
+   echo "Done."
+
+else
+
+   echo "Creating file..."
+
+   cp $TEMPLATE_DIR $PROJECT_DIR
+
+   echo "Done."
+
+fi
+
