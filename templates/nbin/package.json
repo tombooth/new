@@ -11,10 +11,11 @@
   "bin":          {
     "#projectname#":     "./bin/#projectname#"
   },
-  "engines": { "node": "0.6.x" },
+  "engines": { "node": "*" },
   "dependencies": {
+    "cli": "*"
   },
   "devDependencies": {
-     "nodeunit": "0.7.x"
+     "nodeunit": "*"
   }
 }
