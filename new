@@ -4,6 +4,16 @@ AUTHOR="Tom Booth"
 EMAIL="tombooth@gmail.com"
 WEBSITE="http://thomasbooth.co.uk"
 
+while getopts "g" OPTION
+do
+   shift
+   case $OPTION in
+      g) 
+         GIT=true
+         ;;
+   esac
+done
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 TEMPLATE_DIR=$DIR/templates/$1
@@ -65,7 +75,16 @@ if [ -d $TEMPLATE_DIR ]; then
 
    done
 
-   git init $PROJECT_DIR
+   if [ $GIT ]; then 
+      echo "Git enabled project"
+
+      git init $PROJECT_DIR 
+
+      pushd $PROJECT_DIR
+      git add .
+      git commit -m "Initial commit"
+      popd
+   fi
 
    echo "Done."
 
