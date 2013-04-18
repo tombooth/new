@@ -1,5 +1,16 @@
+
 (function() {
 
+   "use strict";
 
+   function #projectname#() {
+
+   }
+
+
+
+   if (module) module.exports = #projectname#;
+   else window.#projectname# = #projectname#;
 
 })();
+
